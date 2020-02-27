@@ -1,0 +1,72 @@
+﻿<script>
+$(document).ready(function(){ //负责分页的函数
+	function getQueryVariable(variable)
+{
+       var query = window.location.search.substring(1);
+       var vars = query.split("&");
+       for (var i=0;i<vars.length;i++) {
+               var pair = vars[i].split("=");
+               if(pair[0] == variable){return pair[1];}
+       }
+       return(false);
+}
+   $("#pagination a").click(function(event){
+    event.preventDefault();
+	page=$(this).attr('href');
+	moviename=decodeURIComponent(getQueryVariable("moviename"));//decodeURIComponent()用于将getQueryVariable()得到的url参数用于转码，转码前这个参数是%DB%AC%这种形式
+	$.get("/page/", {'moviename':moviename,'page':page }, function (ret) {
+		$("#course_note").html(ret);
+		})
+  });
+});
+</script>
+<div id="course_note">
+						<li>影片评论</li>
+						<--当前页内容遍历展示-->
+                            <ul class="mod-post" id="comment-list">
+                                {% for user_comment in customer %}
+                                    <li class="post-row">
+                                        <div class="media">
+                                         <span target="_blank"><img src='/media/{{ user_comment.user.photo }}'
+                                                                   width='40' height='40'/></span>                          
+                                         </div>
+                                        <div class="bd">
+                                            <div class="tit">
+                                                <span target="_blank">{{ user_comment.user }}</span>   
+                                            </div>
+                                            <p class="cnt">
+                                                {{ user_comment.comments }}
+                                            <div class="footer clearfix">
+                                                <span title="创建时间"
+                                                      class="l timeago">时间：{{ user_comment.add_time }}</span>
+                                            </div>
+                                        </div>
+                                    </li>
+                                 {% endfor %}
+                            </ul>
+							
+							 <nav aria-label="Page navigation">
+        <div class="pagination" id="pagination">
+            <ul class="pagination">
+            {% if customer.has_previous %}   
+                <li><a href="{{page.previous_page_number}}" aria-label="Previous" >
+                    <span aria-hidden="true">&laquo;</span></a></li>
+            {% endif %}
+
+            {% for num in customer.paginator.page_range%}  
+                {%if num == customer.number%}
+                    <li><a href="{{num}}" >{{ num }}</a></li>
+                {%else%}
+                    <li><a href="{{num}}" >{{ num }}</a></li>
+                {%endif%}
+             {% endfor %}
+
+             {% if customer.has_next %}  
+                 <li><a href="{{page.next_page_number}}" aria-label="Next" >
+                      <span aria-hidden="true">&raquo;</span></a></li>
+              {% endif %}
+            </ul>
+        </div>
+    </nav>
+	
+</div>

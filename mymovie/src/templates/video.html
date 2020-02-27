@@ -1,0 +1,183 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block css %}
+<link rel="stylesheet" href="/static/css/style.css">
+<link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+{% endblock css %}
+
+{% block content %}
+<meta charset="UTF-8">
+<style>
+.ui unstackable two column grid{ float:center}
+.video-side-title{
+    color: var(--yt-primary-text-color);
+    font-size: 1.28em;
+    font-weight: 400;
+    line-height: 1em;
+    -ms-flex: 1 1 0.000000001px;
+    -webkit-flex: 1;
+    flex: 1; 
+}
+
+.left{float:left;}
+</style>
+<script>
+$(document).ready(function(){
+	  $("#collect").click(function(){//一个监听事件，用于监听id为collect的按钮是否被点击
+	   yes="收藏";
+	   no="取消收藏";
+	   zhi=$("#collect").text();//获得按钮内的字符串
+	   renshu=$("#collect-count").text();//获得收藏人数
+	   moviename=$("#moviename").text();
+	if(zhi==yes){
+	   has_fav=false;
+	   $.get("/fav/", { 'has_fav': has_fav,'moviename':moviename }, function (ret) {
+		//给服务端发送请求，请求的方法为路径/fav/的方法,并把has_fav和moviename的值传给该方法， 服务端返回的请求结果为ret，将请求结果赋值给id为collect的节点
+		 					 alert(ret);//弹窗提醒，提醒的内容取决于服务端返回了什 么
+		                     $('#collect').text(no)//将按钮内的字符改为"取消收藏",表示该影片已经被用户收藏了
+		                     renshu=parseInt(renshu)+1//将代表收藏人数的字符串由字符型变为整形，然后+1
+		                     $("#collect-count").text(renshu);//改写收藏人数
+	         })
+	}
+	if(zhi==no){
+		 has_fav=true;
+		   $.get("/fav/", { 'has_fav': has_fav,'moviename':moviename }, function (ret) {
+			 //请求结果为ret，将请求结果赋值给id为collect的节点
+			 				alert(ret);
+			                $('#collect').text(yes)
+			                renshu=parseInt(renshu)-1
+		                    $("#collect-count").text(renshu);
+		     })
+	}	  
+	  });
+	});
+
+$(document).ready(function(){
+	  $("#content_submit").click(function(){
+		  comment=$("#content_value").val();
+		  moviename=$("#moviename").text();
+		  if(comment==""||comment.length<=5){
+			  alert("很抱歉,评论字符数要大于5才能发表");
+		  }
+		  else{
+		  $.get("/comments/", { 'comment': comment,'moviename':moviename }, function (ret) {
+				 //请求结果为ret，将请求结果赋值给id为comment的节点
+				 					alert(ret);
+				 					window.location.reload();//刷新当前页面
+		  })
+		 }
+	  });
+	});
+</script>
+<div>
+<div>
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<div class="head" style="border:1px solid #eaeaea;">
+				<h1>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{video.moviename}}</h1>
+			</div>
+			<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<section>	
+<div class="left">
+<div class="ui unstackable two column grid">
+    <div class=" ten wide column">
+        <video class="video-js vjs-big-play-centered" data-setup="{}" width="647" height="400" autoplay="autoplay" controls="controls" controlslist="nodownload" id="video" webkit-playsinline="true"  loop="loop"
+               disablePictureInPicture>
+            <source src="/media/{{video.video}}" type="video/mp4">
+        </video>
+        <div class="video-info">
+                                           电影名称:<div class="video-title" id="moviename">{{ video.moviename }}</div>
+            <div style="width:647">电影介绍：{{video.presentation}}</div>
+            <div class="video-view-count">点击率:{{ video.click }}次观看</div>
+            <div class="video-view-operation">
+            {% for movietype in video.Type.filter %}
+				{{movietype.type}},
+			{% endfor %}
+            </div>
+            <div class="extra content video-view-operation">
+                <span class="left floated like">
+                    <i class="icon" id="like"
+                       video-id="{{ video.id }}"></i>
+                </span>
+                <span class="right floated star">
+                    <i class="bookmark icon cursor" id="star"
+                       video-id="{{ video.id }}"></i>
+                                                                    收藏人数:<span id="collect-count">{{ video.collect }}</span>
+																	
+		<div class="ui comment">
+            {% if not name.username %}
+            <div class="btn colectgroupbtn">
+                <p>登录后即可收藏 </p>
+            </div>
+            {% else %}
+          <div class="btn fr collectionbtn  notlogin
+                 " data-favid="22" data-fav-type="1">
+                    <button id="collect">{{has_fav}}</button>    
+                    </div>
+            {% endif %}
+		</div> 
+                    
+                </span>
+            </div>
+            <div class="ui divider"></div>
+        </div>
+
+
+</div> 
+</div>            
+
+<div class="ui comment">
+            {% if not name.username %}
+            <div class="btn colectgroupbtn">
+                <p>登录后即可评论 &nbsp;&nbsp;&nbsp;<a href="/login/">马上登录</a></p>
+            </div>
+            {% else %}
+          <div id="comment">
+          <textarea id="content_value" style="width:700px; height:200px"></textarea><p/>
+          <button type="submit"  style="right:100px;" id="content_submit" />提交评论</button>  
+        </form>
+    </div>
+            {% endif %}
+</div> 
+</div>           
+</section>            
+</div>
+
+
+{% include 'comments.html' %}
+						
+</div>
+                
+<div>   
+        <span class="video-side-title">推荐列表</span>
+	<div class="ui unstackable divided items">
+    {% for movie in recommend %}
+    <div class="item">
+        <div class="ui tiny image">
+           <a href="/video?moviename={{movie.moviename}}"> <img src="/media/{{movie.cover}}"height="124" width="200" ></a>        
+           </div>
+        <div class="middle aligned content">
+            <a class=" header-title" href="/video?moviename={{movie.moviename}}">{{ movie.moviename }}</a>
+            <div class="meta">
+                <span class="description">{{ movie.click }}次观看</span>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <h3>暂无推荐</h3>
+    {% endfor %}
+	</div> 
+</div>
+        
+</div>        
+
+{% endblock %}
+{% block javascript %}
+
+<script src="{% static 'js/jquery.min.js' %}" type="text/javascript"></script>
+<script src="{% static 'js/jquery-migrate-1.2.1.min.js' %}" type="text/javascript"></script>
+<script type="text/javascript" src="{% static 'js/plugins/jquery.raty.js' %}"></script>
+
+
+{% endblock javascript %}
+ 

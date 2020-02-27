@@ -1,0 +1,87 @@
+{% extends 'usercenter.html' %}
+{% block title %}
+    个人信息
+{% endblock %}
+{% block custom_bread %}
+<meta charset="UTF-8">
+
+
+<script>
+$(document).ready(function(){
+	$("#jsEditUserBtn").click(function(){
+	name=$("#nick_name").val();
+	gender=$("input[name='gender']:checked")[0].nextSibling.nodeValue;;
+	adress=$("#adress").val();
+	$.get("/user_change/", {'name':name,'gender':gender,'adress':adress}, function () {
+		alert("修改成功")
+		})
+	});
+});
+</script> 
+    <section>
+        <div class="wp">
+            <ul  class="crumbs">
+                <li><a href="/index/">首页</a>></li>
+                <li><a href="/usercenter/">个人中心</a>></li>
+                <li>个人信息</li>
+            </ul>
+        </div>
+    </section>
+    {% endblock %}
+
+{% block custom_right_content %}
+    <div class="right">
+		<div class="personal_des ">
+			<div class="head" style="border:1px solid #eaeaea;">
+				<h1>个人信息</h1>
+			</div>
+			<div class="inforcon">
+				<div class="left" style="width:242px;">
+                    <iframe id='frameFile' name='frameFile' style='display: none;'></iframe>
+                    <form class="clearfix" id="jsAvatarForm" enctype="multipart/form-data" autocomplete="off" method="post" action="/image_upload/" target='frameFile'>
+                        <label class="changearea" for="avatarUp">
+                            <span id="avatardiv" class="pic">
+                                <img width="100" height="100" class="js-img-show" id="avatarShow" src="/media/{{name.photo}}"/>
+                            </span>
+                            <span class="fl upload-inp-box" style="margin-left:70px;">
+                                <span class="button btn-green btn-w100" id="jsAvatarBtn">修改头像</span>
+                                <input type="file" name="image" id="avatarUp" class="js-img-up"/>
+                            </span>
+                        </label>
+                        <input type='hidden' name='csrfmiddlewaretoken' value='799Y6iPeEDNSGvrTu3noBrO4MBLv6enY' />
+                        {% csrf_token %}
+                    </form>
+                    <div style="border-top:1px solid #eaeaea;margin-top:30px;">
+                        <a class="button btn-green btn-w100" id="jsUserResetPwd" style="margin:80px auto;width:100px;">修改密码</a>
+                    </div>
+				</div>
+				<form class="perinform" id="jsEditUserForm" autocomplete="off">
+					<ul class="right">
+						<li>昵&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;称：
+                           <input type="text" name="nick_name" id="nick_name" value="{{ name.username }}" maxlength="10">
+                            <i class="error-tips"></i>
+                        </li>
+						
+						<li>性&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;别：
+						<label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="radio"  name="gender" id="gender" value="male" {% if name.gender == '男' %}checked="checked"{% endif %}>男</label>
+							<label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="radio" name="gender" id="gender" value="female" {% if name.gender == '女' %}checked="checked"{% endif %}">女</label>
+						</li>
+						<li class="p_infor_city">地&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;址：
+                            <input type="text" name="adress" id="adress" placeholder="请输入你的地址" value="{{ name.area }}" maxlength="10">
+						    <i class="error-tips"></i>
+                        </li>
+						
+                        <li>邮&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;箱：
+                        	<input class="borderno" type="text" name="email" readonly="readonly" value="{{ name.email }}"/>
+                            <span class="green changeemai_btn">[修改]</span>
+                    	</li>
+						<li class="button heibtn">
+							<input type="button" id="jsEditUserBtn" value="保存">
+						</li>
+					</ul>
+                    {% csrf_token %}
+				</form>
+			</div>
+		</div>
+	</div>
+{% endblock %}

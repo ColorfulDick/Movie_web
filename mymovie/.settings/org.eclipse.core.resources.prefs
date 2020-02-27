@@ -1,0 +1,14 @@
+eclipse.preferences.version=1
+encoding//src/Movies/admin.py=utf-8
+encoding//src/Movies/apps.py=utf-8
+encoding//src/Movies/models.py=utf-8
+encoding//src/Movies/tests.py=utf-8
+encoding//src/Movies/views.py=utf-8
+encoding//src/Operation/admin.py=utf-8
+encoding//src/Operation/apps.py=utf-8
+encoding//src/Operation/models.py=utf-8
+encoding//src/Operation/views.py=utf-8
+encoding//src/Users/admin.py=utf-8
+encoding//src/Users/apps.py=utf-8
+encoding//src/Users/models.py=utf-8
+encoding//src/Users/views.py=utf-8

@@ -1,0 +1,110 @@
+{#templates/register.html#}
+
+{% load staticfiles %}
+
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" >
+    <title>在线注册</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/reset.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/login.css' %}">
+
+</head>
+<body>
+<div class="bg" id="dialogBg"></div>
+<header>
+    <div class="c-box fff-box">
+        <div class="wp header-box">
+            <p class="fl hd-tips">爱我视频，在你心里</p>
+            <ul class="fr hd-bar">
+                <li>服务电话：<span>4001008031</span></li>
+                <li><a href="/login/">[登录]</a></li>
+                <li class="active"><a href="/regist/">[注册]</a></li>
+            </ul>
+        </div>
+    </div>
+</header>
+<section>
+    <div class="c-box bg-box">
+        <div class="login-box clearfix">
+            <div class="hd-login clearfix">
+                <a class="index-logo" href="{% url 'index' %}"></a>
+                <h1>用户注册</h1>
+                <a class="index-font" href="{% url 'index' %}">回到首页</a>
+            </div>
+            <div class="fl slide">
+                <div class="imgslide">
+                    <ul class="imgs">
+
+                        <li><a href=""><img width="483" height="472" src="{% static 'images/57a801860001c34b12000460.jpg' %}" /></a></li>
+
+                        <li><a href=""><img width="483" height="472" src="{% static 'images/57a801860001c34b12000460.jpg' %}" /></a></li>
+
+                        <li><a href=""><img width="483" height="472" src="{% static 'images/57a801860001c34b12000460.jpg' %}" /></a></li>
+
+                    </ul>
+                </div>
+                <div class="unslider-arrow prev"></div>
+                <div class="unslider-arrow next"></div>
+            </div>
+            <div class="fl form-box">
+                <div class="tab">
+                    <!--<h2 class="active">手机注册</h2>-->
+                    <h2>邮箱注册</h2>
+                </div>
+                <div class="tab-form">
+                    <form id="email_register_form" method="post" action="/regist/" autocomplete="off">
+                        <input type='hidden' name='csrfmiddlewaretoken' value='gTZljXgnpvxn0fKZ1XkWrM1PrCGSjiCZ' />
+                    <div class="form-group marb8 ">
+                        <label>用&nbsp;户&nbsp;名</label>
+                        <input name="username" id="username" type="text" placeholder="请输入您的昵称" />
+                    </div>
+                        <div class="form-group marb8 ">
+                            <label>邮&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;箱</label>
+                            <input  type="text" id="email" name="email"  placeholder="请输入您的邮箱地址" />
+                        </div>
+                        <div class="form-group marb8 ">
+                            <label>密&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;码</label>
+                            <input type="password" id="password" name="password"   placeholder="请输入6-20位非中文字符密码" />
+                        </div>
+                        <div class="form-group marb8 ">
+                            <label>确&nbsp;认&nbsp;密&nbsp;码</label>
+                            <input type="password" id="repassword" name="repassword"   placeholder="请再次确认密码" />
+                        </div>
+                        <div class="form-group marb8 captcha1 ">
+                            <label>验&nbsp;证&nbsp;码</label>
+                            <input name="valid_code" id="valid_code" type="text" placeholder="请输入验证码" />
+                        </div>
+                    	<div class="auto-box marb8">
+                        <img id="valid-img" class="valid-img" src="/get_valid_img.png?" alt="">
+                        <label>您的性别是:</label>
+   						<label><input type="radio" value="男" name="gender"/>男</label>
+                        <label><input type="radio" value="女" name="gender"/>女</label>						
+                        <input class="btn btn-green" id="jsEmailRegBtn" type="submit" value="注册并登录" />
+                    	<input type='hidden' name='csrfmiddlewaretoken' value='5I2SlleZJOMUX9QbwYLUIAOshdrdpRcy' />
+                    	</div>
+                    {% csrf_token %}
+                    </form>
+                    <p class="form-p">已有账号？<a href="/login/">[立即登录]</a></p>
+        </div>
+    </div>
+</section>
+<input id="isLogin" type="hidden" value="False"/>
+			{% if messages %}
+        <script>
+            {% for msg in messages %}
+                alert('{{ msg.message }}');
+            {% endfor %}
+        </script>
+    		{% endif %}
+<script src="{% static 'js/jquery.min.js' %}" type="text/javascript"></script>
+<script src="{% static 'js/unslider.js' %}" type="text/javascript"></script>
+<script src="{% static 'js/validateDialog.js' %}"  type="text/javascript"></script>
+<script src="{% static 'js/login.js' %}"  type="text/javascript"></script>
+</body>
+</html>

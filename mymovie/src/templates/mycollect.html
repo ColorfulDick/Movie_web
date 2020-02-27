@@ -1,0 +1,55 @@
+{% extends 'usercenter.html' %}
+{% block title %}
+    个人信息
+{% endblock %}
+{% block custom_bread %}
+<meta charset="UTF-8">
+    <section>
+        <div class="wp">
+            <ul  class="crumbs">
+                <li><a href="/index/">首页</a>></li>
+                <li><a href="/usercenter/">个人中心</a>></li>
+                <li>个人信息</li>
+            </ul>
+        </div>
+    </section>
+    {% endblock %}
+	
+{% block custom_right_content %}
+ <div class="right">
+		<div class="personal_des ">
+			<div class="head" style="border:1px solid #eaeaea;">
+				<h1>我的收藏</h1>
+			</div>
+			<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			  <h1>{{ name.username }} 收藏的电影有:</h1>
+			  <br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	<table>
+	<thead>
+	<tr>
+		<th>电影名称</th>
+		<th>视频类型</th>
+		<th>点击数</th>
+		<th>收藏人数</th>
+		<th>发布时间</th>
+		<th>封面</th>
+		<th>收藏时间</th>
+	</tr>
+	</thead>
+	<tbody>
+	{% for i in collectmovies %}
+	<tr>
+		<td>{{i.movie.moviename}}</td>
+		<td>{% for movietype in i.movie.Type.filter %}
+		{{movietype.type}}&nbsp;&nbsp;
+		{% endfor %}</td> 
+		<td>&nbsp;&nbsp;{{i.movie.click}}</td>
+		<td>&nbsp;&nbsp;{{i.movie.collect}}</td>
+		<td>{{i.movie.relese_time}}</td>
+		<td><a href="/video?moviename={{i.movie.moviename}}"> <img src="/media/{{i.movie.cover}}"height="124" width="200" ></a></td>
+		<td>{{i.add_time}}</td>
+	</tr>
+	{% endfor %}
+			</div>
+	</div>
+{% endblock %}

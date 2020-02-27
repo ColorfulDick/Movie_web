@@ -1,0 +1,145 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block title %}首页{% endblock %}
+
+{% block custom_bread %}
+{% endblock %}
+
+{% block content %}
+
+<meta charset="UTF-8">
+    <div class="banner">
+			<div class="wp">
+				<div class="fl">
+					<div class="imgslide">
+						<ul class="imgs">
+                            {% for banner in all_banners %}
+                            <li>
+                                    <a href="/video?moviename={{banner.title}}">
+                                        <img width="1200" height="478" src="/media/{{ banner.image }}" />
+                                    </a>
+                                </li>
+                            {% endfor %}
+						</ul>
+					</div>
+					<div class="unslider-arrow prev"></div>
+					<div class="unslider-arrow next"></div>
+				</div>
+				</div>
+			</div>
+<!--banner end-->
+<!--feature start-->
+	<section>
+		<div class="wp">
+			<ul class="feature">
+				<li class="feature1">
+					<img class="pic" src="{% static 'images/feature1.png' %}"/>
+					<p class="center">正版版权</p>
+				</li>
+				<li class="feature2">
+					<img class="pic" src="{% static 'images/feature2.png' %}"/>
+					<p class="center">内容丰富</p>
+				</li>
+				<li class="feature3">
+					<img class="pic" src="{% static 'images/feature3.png' %}"/>
+					<p class="center">更新及时</p>
+				</li>
+				<li class="feature4">
+					<img class="pic" src="{% static 'images/feature4.png' %}"/>
+					<p class="center">推荐迅速</p>
+				</li>
+			</ul>
+		</div>
+	</section>
+<!--feature end-->
+<!--module1 start-->
+	<section>
+		<div class="module">
+			<div class="wp">
+				<h1>为您推荐</h1>
+				<div class="module1 eachmod">
+					<div class="module1_1 left">
+						<img width="228" height="614" src="{% static 'images/module1_1.jpg' %}"/>
+						<p class="fisrt_word">人工智能<br/>猜您喜欢</p>
+						<a class="more" href="/love/">查看更多推荐 ></a>
+					</div>
+					<div class="right group_list">
+						<div class="module1_2 box" >
+							<div class="imgslide2">
+								<ul class="imgs">
+                                    {% for banner_most in most_click %}
+                                    <li>
+                                        <a href="/video?moviename={{banner_most.moviename}}">
+                                            <img  style='max-width: 100%;max-height:100%;background-size:contain;margin:auto;' src="/media/{{ banner_most.cover }}" />
+                                        </a>
+                                    </li>
+                                    {% endfor %}
+								</ul>
+							</div>
+							<div class="unslider-arrow2 prev"></div>
+							<div class="unslider-arrow2 next"></div>
+						</div>
+                            {% for rec in recommend %}
+                            <div class="module1_{{ forloop.counter|add:2 }} box">
+                                <a href="/video?moviename={{rec.moviename}}">
+                                    <img width="233" height="190" src="/media/{{rec.cover}}"/>
+                                </a>
+                                <div class="des">
+                                    <a href="/video?moviename={{rec.moviename}}">
+                                        <h2 title="django入门">{{ rec.moviename }}</h2>
+                                    </a>
+                                    <span class="fl">发布时间：<i class="key">{{ rec.relese_time }}</i></span>
+                                    <span class="fr">观看人数：{{ rec.click }}</span>
+                                </div>
+                                <div class="bottom">
+                                {% for movietype in rec.Type.filter %}
+                                    <span class="fl" title="慕课网">{{ movietype.type }}</span>
+                                    {% endfor %}
+                                    <span class="star fr">{{ rec.collect }}</span>
+                                </div>
+                            </div>
+                            {% endfor %}
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<section>
+		<div class="module greybg">
+			<div class="wp">
+				<h1>最新发布</h1>
+				<div class="module3 eachmod">
+					<div class="module3_1 left">
+						<img width="228" height="463" src="/static/images/module3_1.jpg"/>
+						<p class="fisrt_word">最新发布<br/>内容精彩</p>
+						<a class="more" href="/org/">查看更多新片></a>
+					</div>
+					<div class="right">
+						<ul>
+      						{% for org in newest %}
+                                 <li class="{% if forloop.counter|divisibleby:5 %}five{% endif %}">
+                                    <a href="/video?moviename={{org.moviename}}">
+                                        <div class="company">
+                                            <img width="184" height="100" src="/media/{{org.cover}}"/>
+                                            <div class="score">
+                                                <div class="circle">
+                                                    <h2>{{ org.click }}</h2>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <p><span class="key" title="{{ org.moviename }}">{{ org.moviename }}</span></p>
+                                    </a>
+                                </li>
+                                {% endfor %}
+      
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+{% endblock %}
+{% block custom_js %}
+<script type="text/javascript" src="{% static 'js/index.js' %}"></script>
+{% endblock %}
+

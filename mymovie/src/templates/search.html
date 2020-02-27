@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block title %}首页{% endblock %}
+
+{% block custom_bread %}
+{% endblock %}
+
+{% block content %}
+<meta charset="UTF-8">
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<table>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	<thead>
+	<tr>
+		<th>电影名称</th>
+		<th>视频类型</th>
+		<th>点击数</th>
+		<th>收藏人数</th>
+		<th>发布时间</th>
+		<th>封面</th>	
+	</tr>
+	</thead>
+
+	{% for movie in result %}
+	<tr>
+		<td>{{movie.moviename}}</td>
+		<td>{% for movietype in movie.Type.filter %}
+		{{movietype.type}}&nbsp;&nbsp;
+		{% endfor %}</td> 
+		<td>&nbsp;&nbsp;{{movie.click}}</td>
+		<td>&nbsp;&nbsp;{{movie.collect}}</td>
+		<td>{{movie.relese_time}}</td>
+		<td><a href="/video?moviename={{movie.moviename}}"> <img src="/media/{{movie.cover}}"height="124" width="200" ></a></td>
+	</tr>
+	{% endfor %}
+	</tbody>
+</table>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;			
+
+
+
+{% endblock %}
+{% block custom_js %}
+<script type="text/javascript" src="{% static 'js/index.js' %}"></script>
+{% endblock %}
