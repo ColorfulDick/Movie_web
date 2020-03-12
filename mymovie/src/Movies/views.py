@@ -20,20 +20,22 @@ def index(request):
         if not username:       
             #如果没登录，就只推荐最新的电影给他
             return render(request,'index.html',{'newest':newest,'all_banners':all_banners,'most_click':most_click})
-        #如果有用户登录
+        #如果有用户登录，就推荐他收藏过的同类型影片给他
         usercollect=UserFavorite.objects.filter(user=username)
-        person=UserFavorite.objects.none()
+        person=UserFavorite.objects.none()#新建一个空的查询集，相当于建了一个新列表用于存放筛选出来的推荐的影片
         for i in usercollect:
-            collectusers=UserFavorite.objects.filter(movie=i.movie).exclude(user=username)
-            person=person|collectusers
+            collectusers=UserFavorite.objects.filter(movie=i.movie).exclude(user=username)#先找到收藏了这部影片的人
+            person=person|collectusers#将查询集collectusers的查询结果合并至查询集person中
+        print(person)	
         rec=UserFavorite.objects.none()
-        for i in person:
+        for i in person:#再把这些人收藏过，而登陆用户没收藏过的影片收集起来
             a=UserFavorite.objects.filter(user=i.user).exclude(movie=i.movie)
-            rec=rec|a
+            rec=rec|a	
         recommend=[]
         for i in rec:
             a=movie.objects.get(moviename=i.movie)
-            recommend.append(a)   
+            recommend.append(a)
+        recommend=set(recommend)			
         name = User.objects.get(username=username)
         return render(request, 'index.html', {'name': name,'newest':newest,'recommend':recommend,'all_banners':all_banners,'most_click':most_click})
 
