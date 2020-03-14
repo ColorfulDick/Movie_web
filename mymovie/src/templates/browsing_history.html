@@ -37,17 +37,17 @@
 	</tr>
 	</thead>
 	<tbody>
-	{% for object in user_history_broswing %}
+	{% for movie in user_history_broswing %}
 	<tr>
-		<td>{{object.movie.moviename}}</td>
-		<td>{% for movietype in object.movie.Type.filter %}
+		<td>{{movie.moviename}}</td>
+		<td>{% for movietype in movie.Type.filter %}
 		{{movietype.type}}&nbsp;&nbsp;
 		{% endfor %}</td> 
-		<td>&nbsp;&nbsp;{{object.movie.click}}</td>
-		<td>&nbsp;&nbsp;{{object.movie.collect}}</td>
-		<td>{{object.movie.relese_time}}</td>
-		<td><a href="/video?moviename={{object.movie.moviename}}"> <img src="/media/{{object.movie.cover}}"height="124" width="200" ></a></td>
-		<td>{{object.add_time}}</td>
+		<td>&nbsp;&nbsp;{{movie.click}}</td>
+		<td>&nbsp;&nbsp;{{movie.collect}}</td>
+		<td>{{movie.relese_time}}</td>
+		<td><a href="/video?moviename={{movie.moviename}}"> <img src="/media/{{movie.cover}}"height="124" width="200" ></a></td>
+		<td>{{movie.add_time}}</td>
 	</tr>
 	{% endfor %}
 			</div>
