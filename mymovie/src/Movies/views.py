@@ -33,7 +33,8 @@ def index(request):
         recommend=[]
         for i in rec:
             a=movie.objects.get(moviename=i.movie)
-            recommend.append(a)   
+            recommend.append(a)
+        recommend=recommend[-6:]#取最新的6部进行推荐
         name = User.objects.get(username=username)
         return render(request, 'index.html', {'name': name,'newest':newest,'recommend':recommend,'all_banners':all_banners,'most_click':most_click})
 
